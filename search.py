@@ -37,10 +37,13 @@ def parse_card_content(card_content):
 # Vercel serverless function entry point
 def handler(request):
     # Get chip ID from query parameters
-    chip_id = request.args.get('chip_id')
+    chip_id = request.query_params.get('chip_id')
     
     if not chip_id:
-        return "Chip ID is required", 400
+        return {
+            "statusCode": 400,
+            "body": json.dumps({"message": "Chip ID is required"})
+        }
 
     # Launch Playwright and fetch the data
     with sync_playwright() as p:
@@ -75,8 +78,14 @@ def handler(request):
             browser.close()
 
             # Return parsed data as JSON
-            return json.dumps(parsed_data), 200
+            return {
+                "statusCode": 200,
+                "body": json.dumps(parsed_data)
+            }
         
         except AttributeError:
             browser.close()
-            return "Card content not found", 404
+            return {
+                "statusCode": 404,
+                "body": json.dumps({"message": "Card content not found"})
+            }
