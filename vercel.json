@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/search.py",
+      "src": "search.py",   // This is the Python function file located in the root
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/api/search",
-      "dest": "/api/search.py"
+      "src": "/api/search",   // This is how the function will be accessed (must include /api/)
+      "dest": "/search.py"    // Points to the file that handles the request
     }
   ]
 }
