@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chip ID Search</title>
+    <script>
+        async function fetchData() {
+            const chip_id = document.getElementById("chip_id").value;
+            if (!chip_id) {
+                alert("Please enter a Chip ID");
+                return;
+            }
+
+            // Construct the URL with the Chip ID query parameter
+            const url = `/api/search?chip_id=${chip_id}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Display the data on the page
+                    document.getElementById("result").innerHTML = JSON.stringify(data, null, 2);
+                } else {
+                    document.getElementById("result").innerHTML = `Error: ${data.message}`;
+                }
+            } catch (error) {
+                document.getElementById("result").innerHTML = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Chip ID Search</h1>
+    <label for="chip_id">Enter Chip ID:</label>
+    <input type="text" id="chip_id" placeholder="Enter Chip ID">
+    <button onclick="fetchData()">Search</button>
+
+    <h3>Result:</h3>
+    <pre id="result"></pre>
+</body>
+</html>
