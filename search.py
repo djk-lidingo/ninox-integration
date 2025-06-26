@@ -25,7 +25,7 @@ def parse_card_content(card_content):
         elif line == 'Färg':
             data['Färg'] = to_camel_case(lines[i + 1].strip()) if i + 1 < len(lines) else "Not found"
         elif line == 'Ägaren':
-            owner_name = lines[i + 2].strip() if i + 2 < len(lines) else "Not found"
+            owner_name = lines[i + 1].strip() if i + 1 < len(lines) else "Not found"
             data['Ägarnamn'] = to_camel_case(owner_name)
         elif line == 'Mobil':
             data['Mobil'] = lines[i + 1].strip() if i + 1 < len(lines) else "Not found"
@@ -36,7 +36,7 @@ def parse_card_content(card_content):
 
 # Vercel serverless function entry point
 def handler(request):
-    # Get chip ID from query parameters
+    # Get chip ID (OrgNo) from query parameters
     chip_id = request.query_params.get('chip_id')
     
     if not chip_id:
@@ -80,7 +80,7 @@ def handler(request):
             # Return parsed data as JSON
             return {
                 "statusCode": 200,
-                "body": json.dumps(parsed_data)
+                "body": json.dumps(parsed_data)  # Ensure this is valid JSON
             }
         
         except AttributeError:
@@ -89,4 +89,3 @@ def handler(request):
                 "statusCode": 404,
                 "body": json.dumps({"message": "Card content not found"})
             }
-
