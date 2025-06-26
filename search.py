@@ -13,19 +13,19 @@ def parse_card_content(card_content):
     # Extracting specific fields based on their labels and structure
     for i, line in enumerate(lines):
         if line == 'Chipnummer':
-            data['Chipnummer'] = lines[i + 1].strip() if i + 1 < len(lines) else "Not found"
+            data['Chipnummer'] = to_camel_case(lines[i + 1].strip()) if i + 1 < len(lines) else "Not found"
         elif line == 'Tilltalsnamn':
-            data['Djurnamn'] = lines[i + 1].strip() if i + 1 < len(lines) else "Not found"
+            data['Djurnamn'] = to_camel_case(lines[i + 1].strip()) if i + 1 < len(lines) else "Not found"
         elif line == 'Ras':
-            data['Ras'] = lines[i + 1].strip() if i + 1 < len(lines) else "Not found"
+            data['Ras'] = to_camel_case(lines[i + 1].strip()) if i + 1 < len(lines) else "Not found"
         elif line == 'Kön':
-            data['Kön'] = lines[i + 1].strip() if i + 1 < len(lines) else "Not found"
+            data['Kön'] = to_camel_case(lines[i + 1].strip()) if i + 1 < len(lines) else "Not found"
         elif line == 'Född':
-            data['Födelsedatum'] = lines[i + 1].strip() if i + 1 < len(lines) else "Not found"
+            data['Födelsedatum'] = to_camel_case(lines[i + 1].strip()) if i + 1 < len(lines) else "Not found"
         elif line == 'Färg':
-            data['Färg'] = lines[i + 1].strip() if i + 1 < len(lines) else "Not found"
+            data['Färg'] = to_camel_case(lines[i + 1].strip()) if i + 1 < len(lines) else "Not found"
         elif line == 'Ägaren':
-            owner_name = lines[i + 1].strip() if i + 1 < len(lines) else "Not found"
+            owner_name = lines[i + 2].strip() if i + 2 < len(lines) else "Not found"
             data['Ägarnamn'] = to_camel_case(owner_name)
         elif line == 'Mobil':
             data['Mobil'] = lines[i + 1].strip() if i + 1 < len(lines) else "Not found"
@@ -89,3 +89,4 @@ def handler(request):
                 "statusCode": 404,
                 "body": json.dumps({"message": "Card content not found"})
             }
+
